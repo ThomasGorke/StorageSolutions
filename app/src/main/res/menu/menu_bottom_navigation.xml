@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/shared_preferences"
+        android:icon="@drawable/ic_sd_storage"
+        android:title="@string/bnv_shared_preferences" />
+
+    <item
+        android:id="@+id/file_storage"
+        android:icon="@drawable/ic_drive_file"
+        android:title="@string/bnv_file_storage" />
+
+    <item
+        android:id="@+id/sql_database"
+        android:icon="@drawable/ic_storage"
+        android:title="@string/bnv_sql_database" />
+
+    <item
+        android:id="@+id/room_database"
+        android:icon="@drawable/ic_meeting_room"
+        android:title="@string/bnv_room_database" />
+
+    <item
+        android:id="@+id/firebase_storage"
+        android:icon="@drawable/ic_firebase"
+        android:title="@string/bnv_firebase_storage" />
+
+</menu>

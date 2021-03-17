@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_graph"
+    app:startDestination="@id/shared_preferences">
+
+    <fragment
+        android:id="@+id/shared_preferences"
+        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:label="Preferences"
+        tools:layout="@layout/fragment_shared_preferences">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="SHARED_PREFERENCES"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+        <action
+            android:id="@+id/sql_database_to_add_author"
+            app:destination="@id/add_author" />
+
+        <action
+            android:id="@+id/sql_database_to_add_news"
+            app:destination="@id/add_news" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/file_storage"
+        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:label="Files"
+        tools:layout="@layout/fragment_shared_preferences">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="FILE"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+        <action
+            android:id="@+id/sql_database_to_add_author"
+            app:destination="@id/add_author" />
+
+        <action
+            android:id="@+id/sql_database_to_add_news"
+            app:destination="@id/add_news" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/sql_database"
+        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:label="SQL"
+        tools:layout="@layout/fragment_shared_preferences">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="SQL"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+
+        <action
+            android:id="@+id/sql_database_to_add_author"
+            app:destination="@id/add_author" />
+
+        <action
+            android:id="@+id/sql_database_to_add_news"
+            app:destination="@id/add_news" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/room_database"
+        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:label="Room"
+        tools:layout="@layout/fragment_shared_preferences">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="ROOM"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+
+        <action
+            android:id="@+id/sql_database_to_add_author"
+            app:destination="@id/add_author" />
+
+        <action
+            android:id="@+id/sql_database_to_add_news"
+            app:destination="@id/add_news" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/firebase_storage"
+        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:label="Firebase"
+        tools:layout="@layout/fragment_shared_preferences">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="FIREBASE"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+        <action
+            android:id="@+id/sql_database_to_add_author"
+            app:destination="@id/add_author" />
+
+        <action
+            android:id="@+id/sql_database_to_add_news"
+            app:destination="@id/add_news" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_author"
+        android:name="com.thomasgorke.storagesolution.add_author.AddAuthorView"
+        android:label="Add Author"
+        tools:layout="@layout/fragment_add_author">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="SQL"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_news"
+        android:name="com.thomasgorke.storagesolution.add_news.AddNewsView"
+        android:label="Add News"
+        tools:layout="@layout/fragment_add_news">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="SQL"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+        <argument
+            android:name="authorId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+
+    </fragment>
+
+</navigation>

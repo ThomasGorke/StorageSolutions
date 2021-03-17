@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bnv_shared_preferences">Shared Preferences</string>
+    <string name="bnv_sql_database">Sql Database</string>
+    <string name="bnv_firebase_storage">Firebase Storage</string>
+    <string name="bnv_room_database">Room Database</string>
+    <string name="bnv_file_storage">File Storage</string>
+</resources>
