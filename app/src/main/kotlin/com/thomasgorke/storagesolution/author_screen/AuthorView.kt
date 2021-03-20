@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.thomasgorke.storagesolution.sqldatabase
+package com.thomasgorke.storagesolution.author_screen
 
 import android.os.Bundle
 import android.view.View
@@ -26,11 +26,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import at.florianschuster.control.bind
 import at.florianschuster.control.distinctMap
-import com.thomasgorke.storagesolution.author_screen.AuthorAdapter
 import com.thomasgorke.storagesolution.R
 import com.thomasgorke.storagesolution.base.ui.viewBinding
-import com.thomasgorke.storagesolution.core.StorageType
-import com.thomasgorke.storagesolution.databinding.FragmentDatabaseBinding
+import com.thomasgorke.storagesolution.databinding.FragmentAuthorsBinding
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -41,13 +39,13 @@ import org.koin.core.parameter.parametersOf
 import reactivecircus.flowbinding.android.view.clicks
 import reactivecircus.flowbinding.lifecycle.events
 
-class SqlView : Fragment(R.layout.fragment_database) {
+class AuthorView : Fragment(R.layout.fragment_authors) {
 
-    private val args: SqlViewArgs by navArgs()
+    private val args: AuthorViewArgs by navArgs()
 
-    private val binding by viewBinding(FragmentDatabaseBinding::bind)
+    private val binding by viewBinding(FragmentAuthorsBinding::bind)
     private val navController by lazy(::findNavController)
-    private val viewModel by viewModel<SqlViewModel>() {
+    private val viewModel by viewModel<AuthorViewModel>() {
         parametersOf(args.storageType)
     }
 
@@ -56,7 +54,7 @@ class SqlView : Fragment(R.layout.fragment_database) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvDbData.adapter = authorAdapter
+        binding.rvAuthors.adapter = authorAdapter
 
         registerActions()
         registerStateListener()
@@ -65,24 +63,20 @@ class SqlView : Fragment(R.layout.fragment_database) {
     private fun registerActions() {
         viewLifecycleOwner.lifecycleScope.launch {
             binding.fabAddAuthor.clicks()
-                .bind { navController.navigate(SqlViewDirections.sqlDatabaseToAddAuthor(args.storageType)) }
+                .bind { navController.navigate(AuthorViewDirections.sqlDatabaseToAddAuthor(args.storageType)) }
                 .launchIn(this)
 
             authorAdapter.interaction
                 .bind {
                     navController.navigate(
-                        SqlViewDirections.sqlDatabaseToAddNews(
-                            StorageType.SQL,
-                            it
-                        )
+                        AuthorViewDirections.sqlDatabaseToAddNews(args.storageType)
                     )
                 }
                 .launchIn(this)
 
-
             viewLifecycleOwner.lifecycle.events()
                 .filter { it == Lifecycle.Event.ON_RESUME }
-                .map { SqlViewModel.Action.OnResume }
+                .map { AuthorViewModel.Action.OnResume }
                 .bind(viewModel::dispatch)
                 .launchIn(this)
         }
@@ -90,7 +84,7 @@ class SqlView : Fragment(R.layout.fragment_database) {
 
     private fun registerStateListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.distinctMap(SqlViewModel.State::authors)
+            viewModel.state.distinctMap(AuthorViewModel.State::authors)
                 .bind { authors ->
                     authorAdapter.submitList(authors)
                 }

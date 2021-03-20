@@ -21,8 +21,11 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import com.thomasgorke.storagesolution.add_author.addAuthorModule
 import com.thomasgorke.storagesolution.add_news.addNewsModule
+import com.thomasgorke.storagesolution.author_screen.AuthorAdapter
+import com.thomasgorke.storagesolution.author_screen.authorModule
 import com.thomasgorke.storagesolution.core.model.AppBuildInfo
 import com.thomasgorke.storagesolution.detail.detailModule
+import com.thomasgorke.storagesolution.news.newsModule
 import com.thomasgorke.storagesolution.sqldatabase.sqlModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -41,4 +44,12 @@ private fun provideAppBuildInfo(context: Context): AppBuildInfo = AppBuildInfo(
     baseUrl = BuildConfig.BASE_URL
 )
 
-internal val appModules = listOf(appModule, detailModule, sqlModule, addAuthorModule, addNewsModule)
+internal val appModules = listOf(
+    appModule,
+    detailModule,
+    sqlModule,
+    addAuthorModule,
+    addNewsModule,
+    authorModule,
+    newsModule
+)

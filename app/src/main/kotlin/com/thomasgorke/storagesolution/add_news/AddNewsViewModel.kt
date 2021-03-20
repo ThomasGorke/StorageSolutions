@@ -5,15 +5,14 @@ import at.florianschuster.control.createEffectController
 import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
-import com.thomasgorke.storagesolution.core.local.SqlDatabase
+import com.thomasgorke.storagesolution.core.local.sql.SqlDatabase
 import com.thomasgorke.storagesolution.core.model.News
 import kotlinx.coroutines.flow.flow
 
 class AddNewsViewModel(
     private val authorId: Long,
-    private val storageType: StorageType,
     private val dataRepo: DataRepo,
-    private val sqlDatabase: SqlDatabase
+    private val storageType: StorageType
 ) : ControllerViewModel<AddNewsViewModel.Action, AddNewsViewModel.State>() {
 
     sealed class Action {
@@ -39,11 +38,11 @@ class AddNewsViewModel(
             mutator = { action ->
                 when (action) {
                     is Action.Add -> flow {
-                        when(storageType){
-                            StorageType.SQL -> sqlDatabase.insertNews(News(action.title, action.content, authorId))
-                            StorageType.ROOM -> sqlDatabase.insertNews(News(action.title, action.content, authorId))
-                            StorageType.FIREBASE -> sqlDatabase.insertNews(News(action.title, action.content, authorId))
-                        }
+                        dataRepo.insertNews(
+                            storageType,
+                            News(action.title, action.content),
+                            authorId
+                        )
                         emitEffect(Effect.Success)
                     }
                 }

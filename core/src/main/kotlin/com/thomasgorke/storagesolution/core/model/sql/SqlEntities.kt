@@ -1,14 +1,14 @@
-package com.thomasgorke.storagesolution.core.model.prefs
+package com.thomasgorke.storagesolution.core.model.sql
 
-data class AuthorPreference(
+data class SqlAuthorEntity(
     val name: String,
     val image: ByteArray
 ) {
     var id: Long = 0
 }
 
-data class NewsPreference(
-    val title: String,
+data class SqlNewsEntity(
+    val headline: String,
     val content: String,
     val authorId: Long
 ) {

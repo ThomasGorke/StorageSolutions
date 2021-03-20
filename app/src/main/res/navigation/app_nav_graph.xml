@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/shared_preferences"
-        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
         android:label="Preferences"
-        tools:layout="@layout/fragment_shared_preferences">
+        tools:layout="@layout/fragment_authors">
 
         <argument
             android:name="storageType"
@@ -28,9 +28,9 @@
 
     <fragment
         android:id="@+id/file_storage"
-        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
         android:label="Files"
-        tools:layout="@layout/fragment_shared_preferences">
+        tools:layout="@layout/fragment_authors">
 
         <argument
             android:name="storageType"
@@ -49,9 +49,9 @@
 
     <fragment
         android:id="@+id/sql_database"
-        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
         android:label="SQL"
-        tools:layout="@layout/fragment_shared_preferences">
+        tools:layout="@layout/fragment_authors">
 
         <argument
             android:name="storageType"
@@ -71,9 +71,9 @@
 
     <fragment
         android:id="@+id/room_database"
-        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
         android:label="Room"
-        tools:layout="@layout/fragment_shared_preferences">
+        tools:layout="@layout/fragment_authors">
 
         <argument
             android:name="storageType"
@@ -93,9 +93,9 @@
 
     <fragment
         android:id="@+id/firebase_storage"
-        android:name="com.thomasgorke.storagesolution.sqldatabase.SqlView"
+        android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
         android:label="Firebase"
-        tools:layout="@layout/fragment_shared_preferences">
+        tools:layout="@layout/fragment_authors">
 
         <argument
             android:name="storageType"
@@ -109,6 +109,13 @@
         <action
             android:id="@+id/sql_database_to_add_news"
             app:destination="@id/add_news" />
+
+    </fragment>
+
+    <fragment android:id="@+id/news"
+        android:name="com.thomasgorke.storagesolution.news.NewsView"
+        android:label="News"
+        tools:layout="@layout/fragment_news">
 
     </fragment>
 

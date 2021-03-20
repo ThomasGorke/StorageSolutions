@@ -22,6 +22,8 @@ import androidx.room.Room
 import com.thomasgorke.storagesolution.core.local.room.RoomAppDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabaseImpl
+import com.thomasgorke.storagesolution.core.local.sql.SqlDatabase
+import com.thomasgorke.storagesolution.core.local.sql.SqlDatabaseImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -34,7 +36,11 @@ internal val localModule = module {
 
 
     single<SpStorage> { SpStorageImpl(prefs = get(), gson = get()) }
-    single<SqlDatabase> { SqlDatabaseImpl(androidContext()) }
+    single<SqlDatabase> {
+        SqlDatabaseImpl(
+            androidContext()
+        )
+    }
     single<FileStorage> { FileStorageImpl() }
     single<RoomDatabase> {
         RoomDatabaseImpl(

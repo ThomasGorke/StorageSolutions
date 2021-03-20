@@ -1,4 +1,4 @@
-package com.thomasgorke.storagesolution
+package com.thomasgorke.storagesolution.news
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,13 +9,13 @@ import com.thomasgorke.storagesolution.core.model.News
 import com.thomasgorke.storagesolution.databinding.ItemNewsBinding
 
 
-class NewsAdapter :
-    ListAdapter<News, NewsViewHolder>(object : DiffUtil.ItemCallback<News>() {
-        override fun areItemsTheSame(oldItem: News, newItem: News): Boolean = oldItem == newItem
+class NewsAdapter(
+) : ListAdapter<News, NewsViewHolder>(object : DiffUtil.ItemCallback<News>() {
+    override fun areItemsTheSame(oldItem: News, newItem: News): Boolean = oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: News, newItem: News): Boolean =
-            oldItem == newItem
-    }) {
+    override fun areContentsTheSame(oldItem: News, newItem: News): Boolean =
+        oldItem == newItem
+}) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder =
         NewsViewHolder(
@@ -38,5 +38,6 @@ class NewsViewHolder(
 
     fun bind(data: News) {
         binding.tvNewsTitle.text = data.headline
+        binding.tvNewsContent.text = data.content
     }
 }

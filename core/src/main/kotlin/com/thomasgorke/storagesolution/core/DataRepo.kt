@@ -17,15 +17,21 @@
 
 package com.thomasgorke.storagesolution.core
 
+import com.thomasgorke.storagesolution.core.StorageType.*
 import com.thomasgorke.storagesolution.core.local.FileStorage
-import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.local.SpStorage
-import com.thomasgorke.storagesolution.core.local.SqlDatabase
+import com.thomasgorke.storagesolution.core.local.sql.SqlDatabase
+import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.model.Author
+import com.thomasgorke.storagesolution.core.model.News
+import com.thomasgorke.storagesolution.core.utils.*
 
 interface DataRepo {
-    fun getAllAuthors(storageType: StorageType): List<Author>
-    fun insertAuthor(storageType: StorageType, newAuthor: Author): Author
+    suspend fun getAllAuthors(storageType: StorageType): List<Author>
+    suspend fun insertAuthor(storageType: StorageType, newAuthor: Author): Author
+
+    suspend fun getAllNewsByAuthorId(storageType: StorageType, id: Long): List<News>
+    suspend fun insertNews(storageType: StorageType, news: News, authorId: Long): News
 }
 
 class CoreDataRepo(
@@ -35,11 +41,47 @@ class CoreDataRepo(
     private val roomDatabase: RoomDatabase
 ) : DataRepo {
 
-    override fun getAllAuthors(storageType: StorageType): List<Author> {
-        return emptyList()
+    override suspend fun getAllAuthors(storageType: StorageType): List<Author> {
+        return when (storageType) {
+            SHARED_PREFERENCES -> spStorage.getAllAuthors().map { it.toAuthor() }
+            FILE -> emptyList()
+            SQL -> sqlDatabase.getAllAuthors().map { it.toAuthor() }
+            ROOM -> roomDatabase.getAllAuthors().map { it.toAuthor() }
+            FIREBASE -> emptyList()
+        }
     }
 
-    override fun insertAuthor(storageType: StorageType, newAuthor: Author): Author {
-        return newAuthor
+    override suspend fun insertAuthor(storageType: StorageType, newAuthor: Author): Author {
+        val newId: Long = when (storageType) {
+            SHARED_PREFERENCES -> spStorage.insertAuthor(newAuthor.toPreference()).id
+            FILE -> TODO()
+            SQL -> sqlDatabase.insertAuthor(newAuthor.toSqlEntity()).id
+            ROOM -> roomDatabase.insertAuthor(newAuthor.toRoomEntity()).id
+            FIREBASE -> TODO()
+        }
+
+        return newAuthor.apply { id = newId }
+    }
+
+    override suspend fun getAllNewsByAuthorId(storageType: StorageType, id: Long): List<News> {
+        return when (storageType) {
+            SHARED_PREFERENCES -> spStorage.getNewsByAuthorId(id).map { it.toNews().apply { this.id = it.id } }
+            FILE -> emptyList()
+            SQL -> sqlDatabase.getNewsByAuthorId(id).map { it.toNews().apply { this.id = it.id } }
+            ROOM -> roomDatabase.getNewsByAuthorId(id).map { it.toNews().apply { this.id = it.id } }
+            FIREBASE -> emptyList()
+        }
+    }
+
+    override suspend fun insertNews(storageType: StorageType, news: News, authorId: Long): News {
+        val newId: Long = when (storageType) {
+            SHARED_PREFERENCES -> spStorage.insertNews(news.toPreference(authorId)).id
+            FILE -> TODO()
+            SQL -> sqlDatabase.insertNews(news.toSqlEntity(authorId)).id
+            ROOM -> roomDatabase.insertNews(news.toRoomEntity(authorId)).id
+            FIREBASE -> TODO()
+        }
+
+        return news.apply { this.id = newId }
     }
 }
