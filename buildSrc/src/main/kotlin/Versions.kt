@@ -92,4 +92,10 @@ object Versions {
     const val gradleLatestVersion: String = "6.7.1"
 
     const val room: String = "2.2.6"
+
+    const val firebase: String = "26.7.0"
+
+    const val googleServices = "4.3.5"
+
+    const val coroutinesPlay = "1.4.3"
 }

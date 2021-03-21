@@ -17,14 +17,21 @@
 
 package com.thomasgorke.storagesolution.core
 
+import android.graphics.BitmapFactory
+import coil.request.ImageRequest
 import com.thomasgorke.storagesolution.core.StorageType.*
 import com.thomasgorke.storagesolution.core.local.FileStorage
 import com.thomasgorke.storagesolution.core.local.SpStorage
+import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorage
 import com.thomasgorke.storagesolution.core.local.sql.SqlDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.model.Author
+import com.thomasgorke.storagesolution.core.model.FirebaseAuthor
 import com.thomasgorke.storagesolution.core.model.News
 import com.thomasgorke.storagesolution.core.utils.*
+import java.io.InputStream
+import java.net.URL
+import java.net.URLConnection
 
 interface DataRepo {
     suspend fun getAllAuthors(storageType: StorageType): List<Author>
@@ -38,7 +45,8 @@ class CoreDataRepo(
     private val spStorage: SpStorage,
     private val sqlDatabase: SqlDatabase,
     private val fileStorage: FileStorage,
-    private val roomDatabase: RoomDatabase
+    private val roomDatabase: RoomDatabase,
+    private val firebaseStorage: FirebaseStorage
 ) : DataRepo {
 
     override suspend fun getAllAuthors(storageType: StorageType): List<Author> {
@@ -54,10 +62,13 @@ class CoreDataRepo(
     override suspend fun insertAuthor(storageType: StorageType, newAuthor: Author): Author {
         val newId: Long = when (storageType) {
             SHARED_PREFERENCES -> spStorage.insertAuthor(newAuthor.toPreference()).id
-            FILE -> TODO()
+            FILE -> 0
             SQL -> sqlDatabase.insertAuthor(newAuthor.toSqlEntity()).id
             ROOM -> roomDatabase.insertAuthor(newAuthor.toRoomEntity()).id
-            FIREBASE -> TODO()
+            FIREBASE -> {
+                firebaseStorage.insertAuthor(FirebaseAuthor(newAuthor.name, "www.google.com"))
+                0
+            }
         }
 
         return newAuthor.apply { id = newId }
@@ -76,10 +87,10 @@ class CoreDataRepo(
     override suspend fun insertNews(storageType: StorageType, news: News, authorId: Long): News {
         val newId: Long = when (storageType) {
             SHARED_PREFERENCES -> spStorage.insertNews(news.toPreference(authorId)).id
-            FILE -> TODO()
+            FILE -> 0
             SQL -> sqlDatabase.insertNews(news.toSqlEntity(authorId)).id
             ROOM -> roomDatabase.insertNews(news.toRoomEntity(authorId)).id
-            FIREBASE -> TODO()
+            FIREBASE -> 0
         }
 
         return news.apply { this.id = newId }

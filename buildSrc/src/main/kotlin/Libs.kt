@@ -411,4 +411,21 @@ object Libs {
     const val roomRuntime: String = "androidx.room:room-runtime:" + Versions.room
     const val roomProcessor: String = "androidx.room:room-compiler:" + Versions.room
     const val roomKotlin: String = "androidx.room:room-ktx:" + Versions.room
+
+    /**
+     * https://firebase.google.com/docs/storage/android/start#add-sdk
+     */
+    const val firebaseBom: String = "com.google.firebase:firebase-bom:" + Versions.firebase
+    const val firebaseStorage: String = "com.google.firebase:firebase-storage-ktx"
+    const val firebaseFirestore: String = "com.google.firebase:firebase-firestore-ktx"
+
+    /**
+     *
+     */
+    const val googleServices: String = "com.google.gms:google-services:" + Versions.googleServices
+
+    /**
+     *
+     */
+    const val coroutinesPlay: String = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:" + Versions.coroutinesPlay
 }

@@ -29,7 +29,8 @@ internal val coreModule = module {
             spStorage = get(),
             sqlDatabase = get(),
             fileStorage = get(),
-            roomDatabase = get()
+            roomDatabase = get(),
+            firebaseStorage = get()
         )
     }
 }

@@ -14,7 +14,6 @@ import coil.load
 import com.thomasgorke.storagesolution.R
 import com.thomasgorke.storagesolution.base.ui.viewBinding
 import com.thomasgorke.storagesolution.databinding.FragmentAddAuthorBinding
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach

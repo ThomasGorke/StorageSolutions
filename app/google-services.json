@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "290073483812",
+    "project_id": "storagesolution-12f8c",
+    "storage_bucket": "storagesolution-12f8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290073483812:android:a214a02544f5ac08c196b1",
+        "android_client_info": {
+          "package_name": "com.thomasgorke.storagesolution"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290073483812-ljs5ga665dca3nk0ukmbd09fqvhdnsp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpV32-Bs-G0FapxgcGUhMa-nlzUy4Nav8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290073483812-ljs5ga665dca3nk0ukmbd09fqvhdnsp6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290073483812:android:6c643d107bbe2cf0c196b1",
+        "android_client_info": {
+          "package_name": "com.thomasgorke.storagesolution.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290073483812-ljs5ga665dca3nk0ukmbd09fqvhdnsp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpV32-Bs-G0FapxgcGUhMa-nlzUy4Nav8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290073483812-ljs5ga665dca3nk0ukmbd09fqvhdnsp6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

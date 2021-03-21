@@ -19,6 +19,9 @@ package com.thomasgorke.storagesolution
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.thomasgorke.storagesolution.add_author.addAuthorModule
 import com.thomasgorke.storagesolution.add_news.addNewsModule
 import com.thomasgorke.storagesolution.author_screen.AuthorAdapter
@@ -33,6 +36,10 @@ internal val appModule = module {
     single { provideAppBuildInfo(context = androidContext()) }
     factory { AuthorAdapter() }
     factory { NewsAdapter() }
+
+    single { Firebase.storage.reference.child("images") }
+    single { Firebase.firestore }
+//    single { Firebase.firestore.collection("news") }
 }
 
 private fun provideAppBuildInfo(context: Context): AppBuildInfo = AppBuildInfo(
@@ -46,7 +53,6 @@ private fun provideAppBuildInfo(context: Context): AppBuildInfo = AppBuildInfo(
 
 internal val appModules = listOf(
     appModule,
-//    sqlModule,
     addAuthorModule,
     addNewsModule,
     authorModule,

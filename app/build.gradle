@@ -112,8 +112,6 @@ apply from: rootProject.file("gradle/test-dependencies-android.gradle")
 dependencies {
     implementation(project(path: ":core"))
     implementation(project(path: ":base-ui"))
-
-    implementation(Libs.coil)
 }
 
 easylauncher {
@@ -129,3 +127,5 @@ easylauncher {
         release {}
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

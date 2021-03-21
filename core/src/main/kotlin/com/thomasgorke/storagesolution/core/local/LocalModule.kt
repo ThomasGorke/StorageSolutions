@@ -19,6 +19,8 @@ package com.thomasgorke.storagesolution.core.local
 
 import android.content.Context
 import androidx.room.Room
+import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorage
+import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorageImpl
 import com.thomasgorke.storagesolution.core.local.room.RoomAppDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabaseImpl
@@ -31,20 +33,39 @@ import org.koin.dsl.module
 private const val STORAGE_SOLUTION_PREFS = "STORAGE_SOLUTION_PREFS"
 
 internal val localModule = module {
+    // Preferences
     single { androidContext().getSharedPreferences(STORAGE_SOLUTION_PREFS, Context.MODE_PRIVATE) }
-    single { Room.databaseBuilder(androidContext(), RoomAppDatabase::class.java, "app-database").build() }
-
-
     single<SpStorage> { SpStorageImpl(prefs = get(), gson = get()) }
+
+    //Sql
     single<SqlDatabase> {
         SqlDatabaseImpl(
             androidContext()
         )
     }
+
+    //File
     single<FileStorage> { FileStorageImpl() }
+
+    //Room
+    single {
+        Room.databaseBuilder(androidContext(), RoomAppDatabase::class.java, "app-database").build()
+    }
     single<RoomDatabase> {
         RoomDatabaseImpl(
             roomAppDatabase = get()
+        )
+    }
+
+    //Firebase
+//    single { Firebase.storage.reference.child("images") }
+//    single { Firebase.firestore.collection("authors") }
+//    single { Firebase.firestore.collection("news") }
+    single<FirebaseStorage> {
+        FirebaseStorageImpl(
+            androidContext(),
+            imageReference = get(),
+            firebaseStore = get()
         )
     }
 }

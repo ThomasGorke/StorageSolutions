@@ -18,4 +18,11 @@ dependencies {
     implementation(Libs.roomRuntime)
     kapt(Libs.roomProcessor)
     implementation(Libs.roomKotlin)
+
+    api platform(Libs.firebaseBom)
+    api(Libs.firebaseStorage)
+    api(Libs.firebaseFirestore)
+    implementation(Libs.coroutinesPlay)
+
+    api(Libs.coil)
 }
