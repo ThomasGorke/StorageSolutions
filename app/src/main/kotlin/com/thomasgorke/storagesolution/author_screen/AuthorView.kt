@@ -63,13 +63,13 @@ class AuthorView : Fragment(R.layout.fragment_authors) {
     private fun registerActions() {
         viewLifecycleOwner.lifecycleScope.launch {
             binding.fabAddAuthor.clicks()
-                .bind { navController.navigate(AuthorViewDirections.sqlDatabaseToAddAuthor(args.storageType)) }
+                .bind { navController.navigate(AuthorViewDirections.authorsToAddAuthor(args.storageType)) }
                 .launchIn(this)
 
             authorAdapter.interaction
-                .bind {
+                .bind { authorId ->
                     navController.navigate(
-                        AuthorViewDirections.sqlDatabaseToAddNews(args.storageType)
+                        AuthorViewDirections.authorsToNews(args.storageType, authorId)
                     )
                 }
                 .launchIn(this)

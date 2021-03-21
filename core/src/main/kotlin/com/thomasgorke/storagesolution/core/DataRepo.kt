@@ -43,10 +43,10 @@ class CoreDataRepo(
 
     override suspend fun getAllAuthors(storageType: StorageType): List<Author> {
         return when (storageType) {
-            SHARED_PREFERENCES -> spStorage.getAllAuthors().map { it.toAuthor() }
+            SHARED_PREFERENCES -> spStorage.getAllAuthors().map { it.toAuthor().apply { this.id = it.id } }
             FILE -> emptyList()
-            SQL -> sqlDatabase.getAllAuthors().map { it.toAuthor() }
-            ROOM -> roomDatabase.getAllAuthors().map { it.toAuthor() }
+            SQL -> sqlDatabase.getAllAuthors().map { it.toAuthor().apply { this.id = it.id } }
+            ROOM -> roomDatabase.getAllAuthors().map { it.toAuthor().apply { this.id = it.id } }
             FIREBASE -> emptyList()
         }
     }

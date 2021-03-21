@@ -43,13 +43,13 @@ import reactivecircus.flowbinding.lifecycle.events
 
 class SqlView : Fragment(R.layout.fragment_database) {
 
-    private val args: SqlViewArgs by navArgs()
+//    private val args: SqlViewArgs by navArgs()
 
     private val binding by viewBinding(FragmentDatabaseBinding::bind)
     private val navController by lazy(::findNavController)
-    private val viewModel by viewModel<SqlViewModel>() {
-        parametersOf(args.storageType)
-    }
+//    private val viewModel by viewModel<SqlViewModel>() {
+//        parametersOf(args.storageType)
+//    }
 
     private val authorAdapter by inject<AuthorAdapter>()
 
@@ -58,44 +58,7 @@ class SqlView : Fragment(R.layout.fragment_database) {
 
         binding.rvDbData.adapter = authorAdapter
 
-        registerActions()
-        registerStateListener()
+//        registerActions()
+//        registerStateListener()
     }
-
-    private fun registerActions() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            binding.fabAddAuthor.clicks()
-                .bind { navController.navigate(SqlViewDirections.sqlDatabaseToAddAuthor(args.storageType)) }
-                .launchIn(this)
-
-            authorAdapter.interaction
-                .bind {
-                    navController.navigate(
-                        SqlViewDirections.sqlDatabaseToAddNews(
-                            StorageType.SQL,
-                            it
-                        )
-                    )
-                }
-                .launchIn(this)
-
-
-            viewLifecycleOwner.lifecycle.events()
-                .filter { it == Lifecycle.Event.ON_RESUME }
-                .map { SqlViewModel.Action.OnResume }
-                .bind(viewModel::dispatch)
-                .launchIn(this)
-        }
-    }
-
-    private fun registerStateListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.distinctMap(SqlViewModel.State::authors)
-                .bind { authors ->
-                    authorAdapter.submitList(authors)
-                }
-                .launchIn(this)
-        }
-    }
-
 }

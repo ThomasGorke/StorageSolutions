@@ -17,12 +17,12 @@
             app:argType="com.thomasgorke.storagesolution.core.StorageType" />
 
         <action
-            android:id="@+id/sql_database_to_add_author"
+            android:id="@+id/authors_to_add_author"
             app:destination="@id/add_author" />
 
         <action
-            android:id="@+id/sql_database_to_add_news"
-            app:destination="@id/add_news" />
+            android:id="@+id/authors_to_news"
+            app:destination="@id/news" />
 
     </fragment>
 
@@ -38,12 +38,12 @@
             app:argType="com.thomasgorke.storagesolution.core.StorageType" />
 
         <action
-            android:id="@+id/sql_database_to_add_author"
+            android:id="@+id/authors_to_add_author"
             app:destination="@id/add_author" />
 
         <action
-            android:id="@+id/sql_database_to_add_news"
-            app:destination="@id/add_news" />
+            android:id="@+id/authors_to_news"
+            app:destination="@id/news" />
 
     </fragment>
 
@@ -58,14 +58,13 @@
             android:defaultValue="SQL"
             app:argType="com.thomasgorke.storagesolution.core.StorageType" />
 
-
         <action
-            android:id="@+id/sql_database_to_add_author"
+            android:id="@+id/authors_to_add_author"
             app:destination="@id/add_author" />
 
         <action
-            android:id="@+id/sql_database_to_add_news"
-            app:destination="@id/add_news" />
+            android:id="@+id/authors_to_news"
+            app:destination="@id/news" />
 
     </fragment>
 
@@ -80,14 +79,13 @@
             android:defaultValue="ROOM"
             app:argType="com.thomasgorke.storagesolution.core.StorageType" />
 
-
         <action
-            android:id="@+id/sql_database_to_add_author"
+            android:id="@+id/authors_to_add_author"
             app:destination="@id/add_author" />
 
         <action
-            android:id="@+id/sql_database_to_add_news"
-            app:destination="@id/add_news" />
+            android:id="@+id/authors_to_news"
+            app:destination="@id/news" />
 
     </fragment>
 
@@ -103,19 +101,34 @@
             app:argType="com.thomasgorke.storagesolution.core.StorageType" />
 
         <action
-            android:id="@+id/sql_database_to_add_author"
+            android:id="@+id/authors_to_add_author"
             app:destination="@id/add_author" />
 
         <action
-            android:id="@+id/sql_database_to_add_news"
-            app:destination="@id/add_news" />
+            android:id="@+id/authors_to_news"
+            app:destination="@id/news" />
 
     </fragment>
 
-    <fragment android:id="@+id/news"
+    <fragment
+        android:id="@+id/news"
         android:name="com.thomasgorke.storagesolution.news.NewsView"
         android:label="News"
         tools:layout="@layout/fragment_news">
+
+        <argument
+            android:name="storageType"
+            android:defaultValue="SQL"
+            app:argType="com.thomasgorke.storagesolution.core.StorageType" />
+
+        <argument
+            android:name="authorId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+
+        <action
+            android:id="@+id/news_to_add_news"
+            app:destination="@id/add_news" />
 
     </fragment>
 

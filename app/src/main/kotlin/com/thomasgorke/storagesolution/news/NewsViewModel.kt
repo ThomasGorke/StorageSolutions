@@ -9,12 +9,17 @@ import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.News
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 class NewsViewModel(
     private val authorId: Long,
     private val dataRepo: DataRepo,
     private val storageType: StorageType
 ) : ControllerViewModel<NewsViewModel.Action, NewsViewModel.State>() {
+
+    init {
+        Timber.d("News:\nID: $authorId\nType: $storageType")
+    }
 
     sealed class Action {
         object OnResume : Action()
@@ -34,7 +39,7 @@ class NewsViewModel(
             mutator = { action ->
                 when (action) {
                     is Action.OnResume -> flow {
-                        dataRepo.getAllNewsByAuthorId(storageType, authorId)
+                        emit(Mutation.SetNews(dataRepo.getAllNewsByAuthorId(storageType, authorId)))
                     }
                 }
             },
