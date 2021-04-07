@@ -9,6 +9,7 @@ import com.thomasgorke.storagesolution.core.local.sql.SqlTables.AuthorEntity
 import com.thomasgorke.storagesolution.core.local.sql.SqlTables.NewsEntity
 import com.thomasgorke.storagesolution.core.model.sql.SqlAuthorEntity
 import com.thomasgorke.storagesolution.core.model.sql.SqlNewsEntity
+import java.util.*
 
 private const val SQL_DB_NAME = "Storage_Solution_SQL_DB.db"
 
@@ -18,7 +19,7 @@ interface SqlDatabase {
     suspend fun getAllAuthors(): List<SqlAuthorEntity>
 
     suspend fun insertNews(news: SqlNewsEntity): SqlNewsEntity
-    suspend fun getNewsByAuthorId(authorId: Long): List<SqlNewsEntity>
+    suspend fun getNewsByAuthorId(authorId: String): List<SqlNewsEntity>
 }
 
 
@@ -45,6 +46,7 @@ class SqlDatabaseImpl(
 
     override suspend fun insertAuthor(newAuthor: SqlAuthorEntity): SqlAuthorEntity =
         ContentValues().apply {
+            put(AuthorEntity.ID, UUID.randomUUID().toString())
             put(AuthorEntity.NAME, newAuthor.name)
             put(AuthorEntity.IMAGE, newAuthor.image)
         }.let {
@@ -55,13 +57,14 @@ class SqlDatabaseImpl(
                     it,
                     SQLiteDatabase.CONFLICT_REPLACE
                 )
-                .let { newAuthor.apply { id = it } }
+
+            newAuthor
         }
 
     override suspend fun getAllAuthors(): List<SqlAuthorEntity> {
         val cursor = readableDatabase.query(
             AuthorEntity.TABLE_NAME,
-            arrayOf(BaseColumns._ID, AuthorEntity.NAME, AuthorEntity.IMAGE),
+            arrayOf(AuthorEntity.ID, AuthorEntity.NAME, AuthorEntity.IMAGE),
             null,
             null,
             null,
@@ -73,11 +76,11 @@ class SqlDatabaseImpl(
 
         with(cursor) {
             while (moveToNext()) {
-                val authorId = getLong(getColumnIndexOrThrow(BaseColumns._ID))
+                val authorId = getString(getColumnIndexOrThrow(AuthorEntity.ID))
                 val name = getString(getColumnIndexOrThrow(AuthorEntity.NAME))
                 val imageBytes = getBlob(getColumnIndexOrThrow(AuthorEntity.IMAGE))
 
-                authors.add(SqlAuthorEntity(name, imageBytes).apply { id = authorId })
+                authors.add(SqlAuthorEntity(authorId, name, imageBytes))
             }
         }
 
@@ -86,6 +89,7 @@ class SqlDatabaseImpl(
 
     override suspend fun insertNews(news: SqlNewsEntity): SqlNewsEntity =
         ContentValues().apply {
+            put(NewsEntity.ID, news.id)
             put(NewsEntity.TITLE, news.headline)
             put(NewsEntity.CONTENT, news.content)
             put(NewsEntity.AUTHOR_ID, news.authorId)
@@ -97,14 +101,15 @@ class SqlDatabaseImpl(
                     it,
                     SQLiteDatabase.CONFLICT_REPLACE
                 )
-                .let { news.apply { id = it } }
+
+            news
         }
 
-    override suspend fun getNewsByAuthorId(authorId: Long): List<SqlNewsEntity> {
+    override suspend fun getNewsByAuthorId(authorId: String): List<SqlNewsEntity> {
         val cursor = readableDatabase.query(
             NewsEntity.TABLE_NAME,
             arrayOf(
-                BaseColumns._ID,
+                NewsEntity.ID,
                 NewsEntity.TITLE,
                 NewsEntity.CONTENT,
                 NewsEntity.AUTHOR_ID
@@ -120,11 +125,11 @@ class SqlDatabaseImpl(
 
         with(cursor) {
             while (moveToNext()) {
-                val newsId = getLong(getColumnIndexOrThrow(BaseColumns._ID))
+                val newsId = getString(getColumnIndexOrThrow(AuthorEntity.ID))
                 val title = getString(getColumnIndexOrThrow(NewsEntity.TITLE))
                 val content = getString(getColumnIndexOrThrow(NewsEntity.CONTENT))
 
-                news.add(SqlNewsEntity(title, content, authorId).apply { id = newsId })
+                news.add(SqlNewsEntity(newsId, title, content, authorId))
             }
         }
 

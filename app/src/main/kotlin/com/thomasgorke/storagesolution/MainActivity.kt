@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setupKoinFragmentFactory()
         super.onCreate(savedInstanceState)
 
+        setSupportActionBar(binding.toolbar)
+
         binding.toolbar.setupWithNavController(
             navController,
             AppBarConfiguration(

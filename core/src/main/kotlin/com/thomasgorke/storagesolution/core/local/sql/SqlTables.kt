@@ -7,6 +7,7 @@ object SqlTables {
         const val TABLE_NAME = "t_authors"
         const val NAME = "name"
         const val IMAGE = "author_image"
+        const val ID = "id"
     }
 
     object NewsEntity : BaseColumns {
@@ -14,5 +15,6 @@ object SqlTables {
         const val TITLE = "title"
         const val CONTENT = "content"
         const val AUTHOR_ID = "author_id"
+        const val ID = "id"
     }
 }

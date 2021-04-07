@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class NewsViewModel(
-    private val authorId: Long,
+    private val authorId: String,
     private val dataRepo: DataRepo,
     private val storageType: StorageType
 ) : ControllerViewModel<NewsViewModel.Action, NewsViewModel.State>() {
@@ -23,6 +23,7 @@ class NewsViewModel(
 
     sealed class Action {
         object OnResume : Action()
+        object OnDeleteAuthor : Action()
     }
 
     sealed class Mutation {
@@ -33,13 +34,21 @@ class NewsViewModel(
         val news: List<News> = emptyList()
     )
 
+    sealed class Effect {
+        object AuthorDeleted : Effect()
+    }
+
     override val controller =
-        viewModelScope.createController<Action, Mutation, State>(
+        viewModelScope.createEffectController<Action, Mutation, State, Effect>(
             initialState = State(),
             mutator = { action ->
                 when (action) {
                     is Action.OnResume -> flow {
                         emit(Mutation.SetNews(dataRepo.getAllNewsByAuthorId(storageType, authorId)))
+                    }
+                    is Action.OnDeleteAuthor -> flow {
+                        dataRepo.deleteAuthor(storageType, authorId)
+                        emitEffect(Effect.AuthorDeleted)
                     }
                 }
             },

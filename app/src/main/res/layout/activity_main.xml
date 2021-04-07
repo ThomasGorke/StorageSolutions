@@ -8,11 +8,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
         android:elevation="4dp"
-        android:background="@color/white"
-        app:title="@string/app_name"
-        app:titleTextColor="?colorAccent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -30,8 +30,6 @@
         android:id="@+id/bnv_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemIconTint="@drawable/selector_tab"
-        app:itemTextColor="@drawable/selector_tab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

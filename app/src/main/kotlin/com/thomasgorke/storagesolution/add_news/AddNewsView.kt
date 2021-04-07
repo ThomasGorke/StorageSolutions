@@ -1,6 +1,9 @@
 package com.thomasgorke.storagesolution.add_news
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -24,10 +27,15 @@ class AddNewsView : Fragment(R.layout.fragment_add_news) {
 
     private val binding by viewBinding(FragmentAddNewsBinding::bind)
     private val navController by lazy(::findNavController)
-    private val viewModel by viewModel<AddNewsViewModel>() {
-        parametersOf(args.authorId, args.storageType)
+    private val viewModel by viewModel<AddNewsViewModel> {
+        parametersOf(args.authorId, args.storageType, args.operationType, args.news)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,15 +60,39 @@ class AddNewsView : Fragment(R.layout.fragment_add_news) {
 
     private fun registerStateListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.distinctMap(AddNewsViewModel.State::javaClass)
-                .bind { /* do nothing */ }
+            viewModel.state.distinctMap(AddNewsViewModel.State::title)
+                .bind { binding.etHeadline.setText(it) }
+                .launchIn(this)
+
+            viewModel.state.distinctMap(AddNewsViewModel.State::content)
+                .bind { binding.etContent.setText(it) }
+                .launchIn(this)
+
+            viewModel.state.distinctMap(AddNewsViewModel.State::uiSetup)
+                .bind {
+                    setMenuVisibility(it.showMenu)
+                    requireActivity().setTitle(it.toolbarTitle)
+                    binding.btnAdd.setText(it.btnText)
+                }
                 .launchIn(this)
 
             viewModel.controller.effects.onEach { effect ->
                 when (effect) {
-                    AddNewsViewModel.Effect.Success -> navController.popBackStack()
+                    AddNewsViewModel.Effect.Success -> navController.navigateUp()
+                    AddNewsViewModel.Effect.NewsDeleted -> navController.navigateUp()
                 }
             }.launchIn(this)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_news, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.delete) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

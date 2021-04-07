@@ -5,4 +5,10 @@
     <string name="bnv_firebase_storage">Firebase Storage</string>
     <string name="bnv_room_database">Room Database</string>
     <string name="bnv_file_storage">File Storage</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_delete_author">Delete Author</string>
+    <string name="update">Update</string>
+    <string name="add">Add</string>
+    <string name="toolbar_title_update">Update</string>
+    <string name="toolbar_title_add">Add News</string>
 </resources>

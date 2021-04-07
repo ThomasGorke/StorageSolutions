@@ -1,16 +1,14 @@
 package com.thomasgorke.storagesolution.core.model.prefs
 
 data class AuthorPreference(
+    var id: String,
     val name: String,
-    val image: ByteArray
-) {
-    var id: Long = 0
-}
+    val image: ByteArray,
+)
 
 data class NewsPreference(
-    val title: String,
-    val content: String,
-    val authorId: Long
-) {
-    var id: Long = 0
-}
+    var id: String,
+    var title: String,
+    var content: String,
+    val authorId: String,
+)

@@ -5,20 +5,16 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "t_author")
-data class AuthorEntity(
+data class RoomAuthorEntity(
+    @PrimaryKey val id: String,
     val name: String,
     val image: ByteArray
-) {
-    @PrimaryKey
-    var id: Long = 0
-}
+)
 
 @Entity(tableName = "t_news")
-data class NewsEntity(
+data class RoomNewsEntity(
+    @PrimaryKey val id: String,
     val title: String,
     val content: String,
-    val authorId: Long
-) {
-    @PrimaryKey
-    var id: Long = 0
-}
+    val authorId: String
+)

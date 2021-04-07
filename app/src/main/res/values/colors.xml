@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/white</color>
-    <color name="colorPrimaryLight">@color/white</color>
-    <color name="colorPrimaryDark">@color/white</color>
+    <color name="colorPrimary">@color/teal_400</color>
+    <color name="colorPrimaryLight">@color/teal_200</color>
+    <color name="colorPrimaryDark">@color/teal_800</color>
     <color name="colorAccent">@color/blue_500</color>
     <color name="colorAccentLight">@color/blue_300</color>
     <color name="colorAccentDark">@color/blue_700</color>
 
+    <color name="transparent_red">#70D32F2F</color>
 
     <color name="colorAccentDarkTransparent">#101976D2</color>
     <!--

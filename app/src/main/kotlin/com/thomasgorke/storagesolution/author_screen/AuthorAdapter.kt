@@ -22,8 +22,8 @@ class AuthorAdapter :
             oldItem == newItem
     }) {
 
-    private val _interaction = BroadcastChannel<Long>(Channel.BUFFERED)
-    val interaction: Flow<Long> = _interaction.asFlow()
+    private val _interaction = BroadcastChannel<String>(Channel.BUFFERED)
+    val interaction: Flow<String> = _interaction.asFlow()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AuthorViewHolder =
         AuthorViewHolder(
@@ -46,7 +46,7 @@ class AuthorViewHolder(
     private val binding: ItemAuthorImageBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(author: Author, addNewsClick: (authorId: Long) -> Unit) {
+    fun bind(author: Author, addNewsClick: (authorId: String) -> Unit) {
         binding.tvAuthorName.text = author.name
         binding.ivAuthor.load(author.image)
 

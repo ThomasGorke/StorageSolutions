@@ -123,8 +123,8 @@
 
         <argument
             android:name="authorId"
-            android:defaultValue="-1L"
-            app:argType="long" />
+            android:defaultValue=""
+            app:argType="string" />
 
         <action
             android:id="@+id/news_to_add_news"
@@ -157,9 +157,20 @@
             app:argType="com.thomasgorke.storagesolution.core.StorageType" />
 
         <argument
+            android:name="operationType"
+            android:defaultValue="CREATE"
+            app:argType="com.thomasgorke.storagesolution.add_news.OperationType" />
+
+        <argument
             android:name="authorId"
-            android:defaultValue="-1L"
-            app:argType="long" />
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="news"
+            android:defaultValue="@null"
+            app:argType="com.thomasgorke.storagesolution.core.model.News"
+            app:nullable="true" />
 
     </fragment>
 

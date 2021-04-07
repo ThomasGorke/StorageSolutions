@@ -4,21 +4,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.thomasgorke.storagesolution.core.model.room.AuthorEntity
-import com.thomasgorke.storagesolution.core.model.room.NewsEntity
+import com.thomasgorke.storagesolution.core.model.room.RoomAuthorEntity
+import com.thomasgorke.storagesolution.core.model.room.RoomNewsEntity
 
 @Dao
 interface RoomDbDao {
     @Query("SELECT * FROM t_author ORDER BY name")
-    suspend fun getAllAuthors(): List<AuthorEntity>
+    suspend fun getAllAuthors(): List<RoomAuthorEntity>
 
     @Query("SELECT * FROM t_news WHERE authorId = :authorId ORDER BY title")
-    suspend fun getAllNewsByAuthorId(authorId: Long): List<NewsEntity>
+    suspend fun getAllNewsByAuthorId(authorId: String): List<RoomNewsEntity>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAuthor(author: AuthorEntity): Long
+    suspend fun insertAuthor(author: RoomAuthorEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNews(new: NewsEntity): Long
+    suspend fun insertNews(new: RoomNewsEntity): Long
 }

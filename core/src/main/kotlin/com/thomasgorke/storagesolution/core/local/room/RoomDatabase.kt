@@ -1,39 +1,39 @@
 package com.thomasgorke.storagesolution.core.local.room
 
-import com.thomasgorke.storagesolution.core.model.room.AuthorEntity
-import com.thomasgorke.storagesolution.core.model.room.NewsEntity
+import com.thomasgorke.storagesolution.core.model.room.RoomAuthorEntity
+import com.thomasgorke.storagesolution.core.model.room.RoomNewsEntity
 
 
 interface RoomDatabase {
-    suspend fun insertAuthor(newAuthor: AuthorEntity): AuthorEntity
-    suspend fun getAllAuthors(): List<AuthorEntity>
+    suspend fun insertAuthor(newAuthor: RoomAuthorEntity): RoomAuthorEntity
+    suspend fun getAllAuthors(): List<RoomAuthorEntity>
 
-    suspend fun insertNews(news: NewsEntity): NewsEntity
-    suspend fun getNewsByAuthorId(authorId: Long): List<NewsEntity>
+    suspend fun insertNews(news: RoomNewsEntity): RoomNewsEntity
+    suspend fun getNewsByAuthorId(authorId: String): List<RoomNewsEntity>
 }
 
 class RoomDatabaseImpl(
     private val roomAppDatabase: RoomAppDatabase
 ) : RoomDatabase {
 
-    override suspend fun insertAuthor(newAuthor: AuthorEntity): AuthorEntity {
+    override suspend fun insertAuthor(newAuthor: RoomAuthorEntity): RoomAuthorEntity {
         val generatedId = roomAppDatabase.appDatabaseDao()
-            .insertAuthor(AuthorEntity(newAuthor.name, newAuthor.image))
-        return newAuthor.apply { id = generatedId }
+            .insertAuthor(newAuthor)
+        return newAuthor
     }
 
-    override suspend fun getAllAuthors(): List<AuthorEntity> {
+    override suspend fun getAllAuthors(): List<RoomAuthorEntity> {
         return roomAppDatabase.appDatabaseDao().getAllAuthors()
     }
 
-    override suspend fun insertNews(news: NewsEntity): NewsEntity {
+    override suspend fun insertNews(news: RoomNewsEntity): RoomNewsEntity {
         val generatedId = roomAppDatabase.appDatabaseDao()
-            .insertNews(NewsEntity(news.title, news.content, news.authorId))
+            .insertNews(news)
 
-        return news.apply { id = generatedId }
+        return news
     }
 
-    override suspend fun getNewsByAuthorId(authorId: Long): List<NewsEntity> {
+    override suspend fun getNewsByAuthorId(authorId: String): List<RoomNewsEntity> {
         return roomAppDatabase.appDatabaseDao().getAllNewsByAuthorId(authorId)
     }
 }

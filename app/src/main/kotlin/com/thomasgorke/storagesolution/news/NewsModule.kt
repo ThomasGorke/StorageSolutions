@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 internal val newsModule = module {
     fragment { NewsView() }
-    viewModel { (authorId: Long, storageType: StorageType) ->
+    viewModel { (authorId: String, storageType: StorageType) ->
         NewsViewModel(
             dataRepo = get(),
             authorId = authorId,
