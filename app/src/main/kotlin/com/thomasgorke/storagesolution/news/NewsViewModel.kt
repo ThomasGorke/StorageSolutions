@@ -17,10 +17,6 @@ class NewsViewModel(
     private val storageType: StorageType
 ) : ControllerViewModel<NewsViewModel.Action, NewsViewModel.State>() {
 
-    init {
-        Timber.d("News:\nID: $authorId\nType: $storageType")
-    }
-
     sealed class Action {
         object OnResume : Action()
         object OnDeleteAuthor : Action()

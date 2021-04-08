@@ -14,7 +14,6 @@ import at.florianschuster.control.distinctMap
 import com.thomasgorke.storagesolution.R
 import com.thomasgorke.storagesolution.base.ui.viewBinding
 import com.thomasgorke.storagesolution.databinding.FragmentAddNewsBinding
-import com.thomasgorke.storagesolution.news.NewsViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -91,6 +90,7 @@ class AddNewsView : Fragment(R.layout.fragment_add_news) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.delete) {
+            viewModel.dispatch(AddNewsViewModel.Action.DeleteNews)
             return true
         }
         return super.onOptionsItemSelected(item)
