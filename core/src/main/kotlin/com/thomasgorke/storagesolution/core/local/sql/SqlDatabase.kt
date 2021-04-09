@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.provider.BaseColumns
 import com.thomasgorke.storagesolution.core.local.sql.SqlTables.AuthorEntity
 import com.thomasgorke.storagesolution.core.local.sql.SqlTables.NewsEntity
 import com.thomasgorke.storagesolution.core.model.sql.SqlAuthorEntity
@@ -17,9 +16,12 @@ private const val SQL_DB_NAME = "Storage_Solution_SQL_DB.db"
 interface SqlDatabase {
     suspend fun insertAuthor(newAuthor: SqlAuthorEntity): SqlAuthorEntity
     suspend fun getAllAuthors(): List<SqlAuthorEntity>
+    suspend fun deleteAuthor(authorId: String)
 
     suspend fun insertNews(news: SqlNewsEntity): SqlNewsEntity
     suspend fun getNewsByAuthorId(authorId: String): List<SqlNewsEntity>
+    suspend fun updateNews(news: SqlNewsEntity): SqlNewsEntity
+    suspend fun deleteNews(newsId: String)
 }
 
 
@@ -87,6 +89,20 @@ class SqlDatabaseImpl(
         return authors
     }
 
+    override suspend fun deleteAuthor(authorId: String) {
+        writableDatabase.delete(
+            AuthorEntity.TABLE_NAME,
+            "${AuthorEntity.ID} LIKE ?",
+            arrayOf(authorId)
+        )
+
+        writableDatabase.delete(
+            NewsEntity.TABLE_NAME,
+            "${NewsEntity.AUTHOR_ID} LIKE ?",
+            arrayOf(authorId)
+        )
+    }
+
     override suspend fun insertNews(news: SqlNewsEntity): SqlNewsEntity =
         ContentValues().apply {
             put(NewsEntity.ID, news.id)
@@ -134,5 +150,29 @@ class SqlDatabaseImpl(
         }
 
         return news
+    }
+
+    override suspend fun updateNews(news: SqlNewsEntity): SqlNewsEntity {
+        return ContentValues().apply {
+            put(NewsEntity.TITLE, news.headline)
+            put(NewsEntity.CONTENT, news.content)
+        }.let {
+            writableDatabase.update(
+                NewsEntity.TABLE_NAME,
+                it,
+                "${NewsEntity.ID} LIKE ?",
+                arrayOf(news.id)
+            )
+
+            news
+        }
+    }
+
+    override suspend fun deleteNews(newsId: String) {
+        writableDatabase.delete(
+            NewsEntity.TABLE_NAME,
+            "${NewsEntity.AUTHOR_ID} LIKE ?",
+            arrayOf(newsId)
+        )
     }
 }

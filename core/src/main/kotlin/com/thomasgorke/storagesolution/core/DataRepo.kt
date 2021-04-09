@@ -80,10 +80,8 @@ class CoreDataRepo(
             SHARED_PREFERENCES -> spStorage.deleteAuthor(authorId)
             FILE -> {
             }
-            SQL -> {
-            }
-            ROOM -> {
-            }
+            SQL -> sqlDatabase.deleteAuthor(authorId)
+            ROOM -> roomDatabase.deleteAuthor(authorId)
             FIREBASE -> {
             }
         }
@@ -126,8 +124,8 @@ class CoreDataRepo(
         return when (storageType) {
             SHARED_PREFERENCES -> spStorage.updateNews(news.toPreference()).toNews()
             FILE -> news
-            SQL -> news
-            ROOM -> news
+            SQL -> sqlDatabase.updateNews(news.toSqlEntity()).toNews()
+            ROOM -> roomDatabase.updateNews(news.toRoomEntity()).toNews()
             FIREBASE -> news
         }
     }
@@ -137,10 +135,8 @@ class CoreDataRepo(
             SHARED_PREFERENCES -> spStorage.deleteNews(newsId)
             FILE -> {
             }
-            SQL -> {
-            }
-            ROOM -> {
-            }
+            SQL -> sqlDatabase.deleteNews(newsId)
+            ROOM -> roomDatabase.deleteNews(newsId)
             FIREBASE -> {
             }
         }

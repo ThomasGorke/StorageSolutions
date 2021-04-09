@@ -98,7 +98,7 @@ class NewsView : Fragment(R.layout.fragment_news) {
                 when (effect) {
                     NewsViewModel.Effect.AuthorDeleted -> navController.navigateUp()
                 }
-            }
+            }.launchIn(this)
         }
     }
 

@@ -33,13 +33,13 @@ fun News.toPreference(authorId: String = ""): NewsPreference =
 fun Author.toSqlEntity(): SqlAuthorEntity =
     SqlAuthorEntity(this.id, this.name, this.image.toByteArray())
 
-fun News.toSqlEntity(authorId: String): SqlNewsEntity =
+fun News.toSqlEntity(authorId: String = ""): SqlNewsEntity =
     SqlNewsEntity(this.id, this.headline, this.content, authorId)
 
 fun Author.toRoomEntity(): RoomAuthorEntity =
     RoomAuthorEntity(this.id, this.name, this.image.toByteArray())
 
-fun News.toRoomEntity(authorId: String): RoomNewsEntity =
+fun News.toRoomEntity(authorId: String = ""): RoomNewsEntity =
     RoomNewsEntity(this.id, this.headline, this.content, authorId)
 
 
