@@ -171,7 +171,7 @@ class SqlDatabaseImpl(
     override suspend fun deleteNews(newsId: String) {
         writableDatabase.delete(
             NewsEntity.TABLE_NAME,
-            "${NewsEntity.AUTHOR_ID} LIKE ?",
+            "${NewsEntity.ID} LIKE ?",
             arrayOf(newsId)
         )
     }

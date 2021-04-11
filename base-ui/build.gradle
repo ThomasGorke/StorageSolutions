@@ -36,7 +36,4 @@ dependencies {
     api(Libs.util_permissions)
     api(Libs.util_ui)
     api(Libs.viewpager2)
-
-    debugApi(Libs.leakcanary_android)
-    releaseApi(Libs.leakcanary_object_watcher_android)
 }

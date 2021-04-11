@@ -21,7 +21,6 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import at.florianschuster.control.Controller
 import kotlinx.coroutines.flow.Flow
-import leakcanary.AppWatcher
 
 abstract class ControllerViewModel<Action, State> : ViewModel() {
 
@@ -34,6 +33,5 @@ abstract class ControllerViewModel<Action, State> : ViewModel() {
     @CallSuper
     override fun onCleared() {
         super.onCleared()
-        AppWatcher.objectWatcher.watch(this, "${this::class.java.simpleName}.onCleared")
     }
 }

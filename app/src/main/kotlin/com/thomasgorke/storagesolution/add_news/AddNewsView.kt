@@ -39,8 +39,8 @@ class AddNewsView : Fragment(R.layout.fragment_add_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        registerActions()
         registerStateListener()
+        registerActions()
     }
 
     private fun registerActions() {

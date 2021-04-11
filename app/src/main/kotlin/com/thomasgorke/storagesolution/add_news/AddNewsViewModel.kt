@@ -7,6 +7,7 @@ import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.News
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
 
@@ -41,6 +42,7 @@ class AddNewsViewModel(
 
     override val controller =
         viewModelScope.createEffectController<Action, Mutation, State, Effect>(
+            dispatcher = Dispatchers.IO,
             initialState = State(),
             mutator = { action ->
                 when (action) {
@@ -48,21 +50,20 @@ class AddNewsViewModel(
                         if (operationType == OperationType.CREATE) {
                             dataRepo.insertNews(
                                 storageType,
-                                News(action.title, action.content),
-                                authorId
+                                News(action.title, action.content, authorId)
                             )
                         } else {
                             news?.let {
                                 dataRepo.updateNews(
                                     storageType,
-                                    News(action.title, action.content, it.id)
+                                    News(action.title, action.content, it.authorId, it.id)
                                 )
                             }
                         }
                         emitEffect(Effect.Success)
                     }
                     is Action.DeleteNews -> flow {
-                        news?.let { dataRepo.deleteNews(storageType, it.id) }
+                        news?.let { dataRepo.deleteNews(storageType, it) }
                         emitEffect(Effect.NewsDeleted)
                     }
                 }

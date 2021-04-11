@@ -51,19 +51,11 @@ internal val localModule = module {
     single {
         Room.databaseBuilder(androidContext(), RoomAppDatabase::class.java, "app-database").build()
     }
-    single<RoomDatabase> {
-        RoomDatabaseImpl(
-            roomAppDatabase = get()
-        )
-    }
+    single<RoomDatabase> { RoomDatabaseImpl(roomAppDatabase = get()) }
 
     //Firebase
-//    single { Firebase.storage.reference.child("images") }
-//    single { Firebase.firestore.collection("authors") }
-//    single { Firebase.firestore.collection("news") }
     single<FirebaseStorage> {
         FirebaseStorageImpl(
-            androidContext(),
             imageReference = get(),
             firebaseStore = get()
         )

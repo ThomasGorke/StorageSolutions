@@ -24,9 +24,9 @@ import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorage
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.local.sql.SqlDatabase
 import com.thomasgorke.storagesolution.core.model.Author
-import com.thomasgorke.storagesolution.core.model.FirebaseAuthor
 import com.thomasgorke.storagesolution.core.model.News
 import com.thomasgorke.storagesolution.core.utils.*
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 interface DataRepo {
@@ -35,9 +35,9 @@ interface DataRepo {
     suspend fun deleteAuthor(storageType: StorageType, authorId: String)
 
     suspend fun getAllNewsByAuthorId(storageType: StorageType, authorId: String): List<News>
-    suspend fun insertNews(storageType: StorageType, news: News, authorId: String): News
+    suspend fun insertNews(storageType: StorageType, news: News): News
     suspend fun updateNews(storageType: StorageType, news: News): News
-    suspend fun deleteNews(storageType: StorageType, newsId: String)
+    suspend fun deleteNews(storageType: StorageType, news: News)
 }
 
 class CoreDataRepo(
@@ -54,7 +54,7 @@ class CoreDataRepo(
             FILE -> emptyList()
             SQL -> sqlDatabase.getAllAuthors().map { it.toAuthor() }
             ROOM -> roomDatabase.getAllAuthors().map { it.toAuthor() }
-            FIREBASE -> emptyList()
+            FIREBASE -> firebaseStorage.getAllAuthors()
         }
     }
 
@@ -62,14 +62,12 @@ class CoreDataRepo(
         newAuthor.apply { id = UUID.randomUUID().toString() }
 
         when (storageType) {
-            SHARED_PREFERENCES -> spStorage.insertAuthor(newAuthor.toPreference()).id
+            SHARED_PREFERENCES -> spStorage.insertAuthor(newAuthor.toPreference())
             FILE -> {
             }
-            SQL -> sqlDatabase.insertAuthor(newAuthor.toSqlEntity()).id
-            ROOM -> roomDatabase.insertAuthor(newAuthor.toRoomEntity()).id
-            FIREBASE -> {
-                firebaseStorage.insertAuthor(FirebaseAuthor(newAuthor.name, "www.google.com"))
-            }
+            SQL -> sqlDatabase.insertAuthor(newAuthor.toSqlEntity())
+            ROOM -> roomDatabase.insertAuthor(newAuthor.toRoomEntity())
+            FIREBASE -> firebaseStorage.insertAuthor(newAuthor)
         }
 
         return newAuthor
@@ -82,8 +80,7 @@ class CoreDataRepo(
             }
             SQL -> sqlDatabase.deleteAuthor(authorId)
             ROOM -> roomDatabase.deleteAuthor(authorId)
-            FIREBASE -> {
-            }
+            FIREBASE -> firebaseStorage.deleteAuthor(authorId)
         }
     }
 
@@ -92,29 +89,24 @@ class CoreDataRepo(
         authorId: String
     ): List<News> {
         return when (storageType) {
-            SHARED_PREFERENCES -> spStorage.getNewsByAuthorId(authorId).map { it.toNews() }
+            SHARED_PREFERENCES -> spStorage.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
             FILE -> emptyList()
-            SQL -> sqlDatabase.getNewsByAuthorId(authorId).map { it.toNews() }
-            ROOM -> roomDatabase.getNewsByAuthorId(authorId).map { it.toNews() }
-            FIREBASE -> emptyList()
+            SQL -> sqlDatabase.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
+            ROOM -> roomDatabase.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
+            FIREBASE -> firebaseStorage.getAllNewsByAuthorId(authorId)
         }
     }
 
-    override suspend fun insertNews(
-        storageType: StorageType,
-        news: News,
-        authorId: String
-    ): News {
+    override suspend fun insertNews(storageType: StorageType, news: News): News {
         news.apply { id = UUID.randomUUID().toString() }
 
         when (storageType) {
-            SHARED_PREFERENCES -> spStorage.insertNews(news.toPreference(authorId))
+            SHARED_PREFERENCES -> spStorage.insertNews(news.toPreference())
             FILE -> {
             }
-            SQL -> sqlDatabase.insertNews(news.toSqlEntity(authorId))
-            ROOM -> roomDatabase.insertNews(news.toRoomEntity(authorId))
-            FIREBASE -> {
-            }
+            SQL -> sqlDatabase.insertNews(news.toSqlEntity())
+            ROOM -> roomDatabase.insertNews(news.toRoomEntity())
+            FIREBASE -> firebaseStorage.insertNews(news)
         }
 
         return news
@@ -122,23 +114,22 @@ class CoreDataRepo(
 
     override suspend fun updateNews(storageType: StorageType, news: News): News {
         return when (storageType) {
-            SHARED_PREFERENCES -> spStorage.updateNews(news.toPreference()).toNews()
+            SHARED_PREFERENCES -> spStorage.updateNews(news.toPreference()).toNews(news.authorId)
             FILE -> news
-            SQL -> sqlDatabase.updateNews(news.toSqlEntity()).toNews()
-            ROOM -> roomDatabase.updateNews(news.toRoomEntity()).toNews()
-            FIREBASE -> news
+            SQL -> sqlDatabase.updateNews(news.toSqlEntity()).toNews(news.authorId)
+            ROOM -> roomDatabase.updateNews(news.toRoomEntity()).toNews(news.authorId)
+            FIREBASE -> firebaseStorage.updateNews(news)
         }
     }
 
-    override suspend fun deleteNews(storageType: StorageType, newsId: String) {
+    override suspend fun deleteNews(storageType: StorageType, news: News) {
         when (storageType) {
-            SHARED_PREFERENCES -> spStorage.deleteNews(newsId)
+            SHARED_PREFERENCES -> spStorage.deleteNews(news.id)
             FILE -> {
             }
-            SQL -> sqlDatabase.deleteNews(newsId)
-            ROOM -> roomDatabase.deleteNews(newsId)
-            FIREBASE -> {
-            }
+            SQL -> sqlDatabase.deleteNews(news.id)
+            ROOM -> roomDatabase.deleteNews(news.id)
+            FIREBASE -> firebaseStorage.deleteNews(news)
         }
     }
 }

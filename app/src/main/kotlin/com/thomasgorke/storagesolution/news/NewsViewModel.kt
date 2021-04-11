@@ -8,7 +8,9 @@ import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.News
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import timber.log.Timber
 
 class NewsViewModel(
@@ -36,6 +38,7 @@ class NewsViewModel(
 
     override val controller =
         viewModelScope.createEffectController<Action, Mutation, State, Effect>(
+            dispatcher = Dispatchers.IO,
             initialState = State(),
             mutator = { action ->
                 when (action) {

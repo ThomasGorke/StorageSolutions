@@ -24,7 +24,11 @@ import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.Author
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class AuthorViewModel(
@@ -50,6 +54,7 @@ class AuthorViewModel(
 
     override val controller: Controller<Action, State> =
         viewModelScope.createController<Action, Mutation, State>(
+            dispatcher = Dispatchers.IO,
             initialState = State(),
             mutator = { action ->
                 when (action) {

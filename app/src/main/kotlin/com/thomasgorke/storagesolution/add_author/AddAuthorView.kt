@@ -51,14 +51,13 @@ class AddAuthorView : Fragment(R.layout.fragment_add_author) {
             isEnabled = false
         }
 
-        registerActions()
         registerStateListener()
+        registerActions()
     }
 
     private fun registerActions() {
         viewLifecycleOwner.lifecycleScope.launch {
             binding.btnAdd.clicks()
-                .map { Timber.d("AddButtonClicked") }
                 .map { AddAuthorViewModel.Action.Add(binding.etAuthorName.text.toString(), img) }
                 .bind(viewModel::dispatch)
                 .launchIn(this)

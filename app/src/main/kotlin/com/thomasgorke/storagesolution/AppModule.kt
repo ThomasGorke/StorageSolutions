@@ -37,9 +37,9 @@ internal val appModule = module {
     factory { AuthorAdapter() }
     factory { NewsAdapter() }
 
-    single { Firebase.storage.reference.child("images") }
+    single { Firebase.storage.reference }
     single { Firebase.firestore }
-//    single { Firebase.firestore.collection("news") }
+
 }
 
 private fun provideAppBuildInfo(context: Context): AppBuildInfo = AppBuildInfo(

@@ -49,8 +49,8 @@ class NewsView : Fragment(R.layout.fragment_news) {
 
         binding.rvNews.adapter = newsAdapter
 
-        registerActions()
         registerStateListener()
+        registerActions()
     }
 
     private fun registerActions() {

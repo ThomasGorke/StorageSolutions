@@ -7,6 +7,7 @@ import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.Author
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
@@ -36,6 +37,7 @@ class AddAuthorViewModel(
 
     override val controller =
         viewModelScope.createEffectController<Action, Mutation, State, Effect>(
+            dispatcher = Dispatchers.IO,
             initialState = State(),
             mutator = { action ->
                 when (action) {

@@ -56,8 +56,8 @@ class AuthorView : Fragment(R.layout.fragment_authors) {
 
         binding.rvAuthors.adapter = authorAdapter
 
-        registerActions()
         registerStateListener()
+        registerActions()
     }
 
     private fun registerActions() {
