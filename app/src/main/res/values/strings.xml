@@ -11,4 +11,6 @@
     <string name="add">Add</string>
     <string name="toolbar_title_update">Update</string>
     <string name="toolbar_title_add">Add News</string>
+    <string name="default_error_msg">An error occurred</string>
+    <string name="error_empty_input">Empty input field</string>
 </resources>

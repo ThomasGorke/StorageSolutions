@@ -20,12 +20,13 @@ package com.thomasgorke.storagesolution
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.thomasgorke.storagesolution.base.ui.viewBinding
 import com.thomasgorke.storagesolution.databinding.ActivityMainBinding
+import com.thomasgorke.storagesolution.utils.Snacker
+import org.koin.android.ext.android.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -35,11 +36,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
 
+    private val snacker: Snacker by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setupKoinFragmentFactory()
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(binding.toolbar)
+        snacker.defineView(binding.root)
 
         binding.toolbar.setupWithNavController(
             navController,

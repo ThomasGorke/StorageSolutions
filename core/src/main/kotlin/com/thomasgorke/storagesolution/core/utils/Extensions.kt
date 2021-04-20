@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import com.google.firebase.firestore.DocumentSnapshot
 import com.thomasgorke.storagesolution.core.model.Author
 import com.thomasgorke.storagesolution.core.model.News
+import com.thomasgorke.storagesolution.core.model.file.FileAuthor
+import com.thomasgorke.storagesolution.core.model.file.FileNews
 import com.thomasgorke.storagesolution.core.model.prefs.AuthorPreference
 import com.thomasgorke.storagesolution.core.model.prefs.NewsPreference
 import com.thomasgorke.storagesolution.core.model.room.RoomAuthorEntity
@@ -35,6 +37,12 @@ fun Author.toPreference(): AuthorPreference =
 fun News.toPreference(): NewsPreference =
     NewsPreference(this.id, this.headline, this.content, this.authorId)
 
+fun Author.toFile(): FileAuthor =
+    FileAuthor(this.id, this.name, this.image.toByteArray())
+
+fun News.toFile(): FileNews =
+    FileNews(this.id, this.headline, this.content, this.authorId)
+
 fun Author.toSqlEntity(): SqlAuthorEntity =
     SqlAuthorEntity(this.id, this.name, this.image.toByteArray())
 
@@ -53,6 +61,9 @@ fun AuthorPreference.toAuthor(): Author = Author(this.name, this.image.toBitmap(
 fun NewsPreference.toNews(authorId: String): News =
     News(this.title, this.content, authorId, this.id)
 
+fun FileAuthor.toAuthor(): Author = Author(this.name, this.image.toBitmap(), this.id)
+fun FileNews.toNews(authorId: String): News = News(this.title, this.content, authorId, this.id)
+
 fun SqlAuthorEntity.toAuthor(): Author = Author(this.name, this.image.toBitmap(), this.id)
 fun SqlNewsEntity.toNews(authorId: String): News =
     News(this.headline, this.content, authorId, this.id)
@@ -63,12 +74,25 @@ fun RoomNewsEntity.toNews(authorId: String): News =
 
 fun DocumentSnapshot.toAuthor(): Author =
     Author(get("name").toString(), get("image").toString().toBitmap(), id)
+
 fun DocumentSnapshot.toNews(authorId: String): News =
     News(get("title").toString(), get("content").toString(), authorId, id)
 
 
 // helper
 fun Iterable<NewsPreference>.updateById(updatedElement: NewsPreference): Iterable<NewsPreference> {
+    for (element in this) {
+        if (element.id == updatedElement.id) {
+            element.apply {
+                title = updatedElement.title
+                content = updatedElement.content
+            }
+        }
+    }
+    return this
+}
+
+fun Iterable<FileNews>.updateById(updatedElement: FileNews): Iterable<FileNews> {
     for (element in this) {
         if (element.id == updatedElement.id) {
             element.apply {

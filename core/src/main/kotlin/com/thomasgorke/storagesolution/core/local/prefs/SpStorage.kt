@@ -1,4 +1,4 @@
-package com.thomasgorke.storagesolution.core.local
+package com.thomasgorke.storagesolution.core.local.prefs
 
 import android.content.SharedPreferences
 import com.google.gson.Gson

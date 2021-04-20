@@ -29,11 +29,14 @@ import com.thomasgorke.storagesolution.author_screen.authorModule
 import com.thomasgorke.storagesolution.core.model.AppBuildInfo
 import com.thomasgorke.storagesolution.news.NewsAdapter
 import com.thomasgorke.storagesolution.news.newsModule
+import com.thomasgorke.storagesolution.utils.Snacker
+import com.thomasgorke.storagesolution.utils.SnackerImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 internal val appModule = module {
     single { provideAppBuildInfo(context = androidContext()) }
+    single<Snacker> { SnackerImpl(context = androidContext()) }
     factory { AuthorAdapter() }
     factory { NewsAdapter() }
 

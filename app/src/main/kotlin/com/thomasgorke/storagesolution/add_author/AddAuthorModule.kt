@@ -9,8 +9,9 @@ internal val addAuthorModule = module {
     fragment { AddAuthorView() }
     viewModel { (storageType: StorageType) ->
         AddAuthorViewModel(
+            snacker = get(),
+            dataRepo = get(),
             storageType = storageType,
-            dataRepo = get()
         )
     }
 }

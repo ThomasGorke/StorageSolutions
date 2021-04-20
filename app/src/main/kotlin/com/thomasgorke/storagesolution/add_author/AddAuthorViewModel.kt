@@ -3,17 +3,21 @@ package com.thomasgorke.storagesolution.add_author
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import at.florianschuster.control.createEffectController
+import com.google.android.material.snackbar.Snackbar
+import com.thomasgorke.storagesolution.R
 import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.Author
+import com.thomasgorke.storagesolution.utils.Snacker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 class AddAuthorViewModel(
+    private val snacker: Snacker,
+    private val dataRepo: DataRepo,
     private val storageType: StorageType,
-    private val dataRepo: DataRepo
 ) : ControllerViewModel<AddAuthorViewModel.Action, AddAuthorViewModel.State>() {
 
     sealed class Action {
@@ -25,14 +29,8 @@ class AddAuthorViewModel(
     class State
 
     sealed class Effect {
-        object AnyError : Effect()
-        object DatabaseError : Effect()
         object EmptyFieldError : Effect()
         object Success : Effect()
-    }
-
-    init {
-        Timber.d("Storage Type: $storageType")
     }
 
     override val controller =
@@ -43,13 +41,22 @@ class AddAuthorViewModel(
                 when (action) {
                     is Action.Add -> flow {
                         if (action.image == null) {
+                            snacker.showError(R.string.error_empty_input)
                             emitEffect(Effect.EmptyFieldError)
                             return@flow
                         }
 
-                        dataRepo.insertAuthor(storageType, Author(action.authorName, action.image))
+                        kotlin.runCatching {
+                            dataRepo.insertAuthor(
+                                storageType,
+                                Author(action.authorName, action.image)
+                            )
+                            emitEffect(Effect.Success)
+                        }.getOrElse {
+                            snacker.showError(R.string.default_error_msg)
+                        }
 
-                        emitEffect(Effect.Success)
+
                     }
                 }
             }

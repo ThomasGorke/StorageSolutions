@@ -9,8 +9,9 @@ internal val authorModule = module {
     fragment { AuthorView() }
     viewModel { (storageType: StorageType) ->
         AuthorViewModel(
+            snacker = get(),
             dataRepo = get(),
-            storageType = storageType
+            storageType = storageType,
         )
     }
 }

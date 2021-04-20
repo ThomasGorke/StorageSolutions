@@ -87,16 +87,6 @@ class AddAuthorView : Fragment(R.layout.fragment_add_author) {
 
             viewModel.controller.effects.onEach { effect ->
                 when (effect) {
-                    AddAuthorViewModel.Effect.AnyError -> {
-                    }
-
-                    AddAuthorViewModel.Effect.DatabaseError -> {
-
-                    }
-
-                    AddAuthorViewModel.Effect.EmptyFieldError -> {
-                        Timber.e("Empty field error")
-                    }
                     AddAuthorViewModel.Effect.Success -> {
                         Timber.d("Navigate to prev screen")
                         navController.popBackStack()

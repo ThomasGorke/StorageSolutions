@@ -19,8 +19,12 @@ package com.thomasgorke.storagesolution.core.local
 
 import android.content.Context
 import androidx.room.Room
+import com.thomasgorke.storagesolution.core.local.file.FileStorage
+import com.thomasgorke.storagesolution.core.local.file.FileStorageImpl
 import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorage
 import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorageImpl
+import com.thomasgorke.storagesolution.core.local.prefs.SpStorage
+import com.thomasgorke.storagesolution.core.local.prefs.SpStorageImpl
 import com.thomasgorke.storagesolution.core.local.room.RoomAppDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabaseImpl
@@ -45,7 +49,7 @@ internal val localModule = module {
     }
 
     //File
-    single<FileStorage> { FileStorageImpl() }
+    single<FileStorage> { FileStorageImpl(context = androidContext(), gson = get()) }
 
     //Room
     single {

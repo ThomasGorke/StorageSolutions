@@ -1,22 +1,20 @@
 package com.thomasgorke.storagesolution.news
 
 import androidx.lifecycle.viewModelScope
-import at.florianschuster.control.createController
 import at.florianschuster.control.createEffectController
-import com.thomasgorke.storagesolution.add_news.AddNewsViewModel
+import com.thomasgorke.storagesolution.utils.Snacker
 import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.News
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onStart
-import timber.log.Timber
 
 class NewsViewModel(
     private val authorId: String,
+    private val snacker: Snacker,
     private val dataRepo: DataRepo,
-    private val storageType: StorageType
+    private val storageType: StorageType,
 ) : ControllerViewModel<NewsViewModel.Action, NewsViewModel.State>() {
 
     sealed class Action {
@@ -43,7 +41,14 @@ class NewsViewModel(
             mutator = { action ->
                 when (action) {
                     is Action.OnResume -> flow {
-                        emit(Mutation.SetNews(dataRepo.getAllNewsByAuthorId(storageType, authorId)))
+                        val news = kotlin.runCatching {
+                            dataRepo.getAllNewsByAuthorId(storageType, authorId)
+                        }.getOrElse {
+                            snacker.showDefaultError()
+                            emptyList()
+                        }
+
+                        emit(Mutation.SetNews(news))
                     }
                     is Action.OnDeleteAuthor -> flow {
                         dataRepo.deleteAuthor(storageType, authorId)

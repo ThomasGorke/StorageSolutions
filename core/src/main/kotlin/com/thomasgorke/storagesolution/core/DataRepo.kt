@@ -18,15 +18,14 @@
 package com.thomasgorke.storagesolution.core
 
 import com.thomasgorke.storagesolution.core.StorageType.*
-import com.thomasgorke.storagesolution.core.local.FileStorage
-import com.thomasgorke.storagesolution.core.local.SpStorage
+import com.thomasgorke.storagesolution.core.local.file.FileStorage
+import com.thomasgorke.storagesolution.core.local.prefs.SpStorage
 import com.thomasgorke.storagesolution.core.local.firebase.FirebaseStorage
 import com.thomasgorke.storagesolution.core.local.room.RoomDatabase
 import com.thomasgorke.storagesolution.core.local.sql.SqlDatabase
 import com.thomasgorke.storagesolution.core.model.Author
 import com.thomasgorke.storagesolution.core.model.News
 import com.thomasgorke.storagesolution.core.utils.*
-import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 interface DataRepo {
@@ -51,7 +50,7 @@ class CoreDataRepo(
     override suspend fun getAllAuthors(storageType: StorageType): List<Author> {
         return when (storageType) {
             SHARED_PREFERENCES -> spStorage.getAllAuthors().map { it.toAuthor() }
-            FILE -> emptyList()
+            FILE -> fileStorage.getAllAuthors().map { it.toAuthor() }
             SQL -> sqlDatabase.getAllAuthors().map { it.toAuthor() }
             ROOM -> roomDatabase.getAllAuthors().map { it.toAuthor() }
             FIREBASE -> firebaseStorage.getAllAuthors()
@@ -63,8 +62,7 @@ class CoreDataRepo(
 
         when (storageType) {
             SHARED_PREFERENCES -> spStorage.insertAuthor(newAuthor.toPreference())
-            FILE -> {
-            }
+            FILE -> fileStorage.insertAuthor(newAuthor.toFile())
             SQL -> sqlDatabase.insertAuthor(newAuthor.toSqlEntity())
             ROOM -> roomDatabase.insertAuthor(newAuthor.toRoomEntity())
             FIREBASE -> firebaseStorage.insertAuthor(newAuthor)
@@ -76,8 +74,7 @@ class CoreDataRepo(
     override suspend fun deleteAuthor(storageType: StorageType, authorId: String) {
         when (storageType) {
             SHARED_PREFERENCES -> spStorage.deleteAuthor(authorId)
-            FILE -> {
-            }
+            FILE -> fileStorage.deleteAuthor(authorId)
             SQL -> sqlDatabase.deleteAuthor(authorId)
             ROOM -> roomDatabase.deleteAuthor(authorId)
             FIREBASE -> firebaseStorage.deleteAuthor(authorId)
@@ -90,7 +87,7 @@ class CoreDataRepo(
     ): List<News> {
         return when (storageType) {
             SHARED_PREFERENCES -> spStorage.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
-            FILE -> emptyList()
+            FILE -> fileStorage.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
             SQL -> sqlDatabase.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
             ROOM -> roomDatabase.getNewsByAuthorId(authorId).map { it.toNews(authorId) }
             FIREBASE -> firebaseStorage.getAllNewsByAuthorId(authorId)
@@ -102,8 +99,7 @@ class CoreDataRepo(
 
         when (storageType) {
             SHARED_PREFERENCES -> spStorage.insertNews(news.toPreference())
-            FILE -> {
-            }
+            FILE -> fileStorage.insertNews(news.toFile())
             SQL -> sqlDatabase.insertNews(news.toSqlEntity())
             ROOM -> roomDatabase.insertNews(news.toRoomEntity())
             FIREBASE -> firebaseStorage.insertNews(news)
@@ -115,7 +111,7 @@ class CoreDataRepo(
     override suspend fun updateNews(storageType: StorageType, news: News): News {
         return when (storageType) {
             SHARED_PREFERENCES -> spStorage.updateNews(news.toPreference()).toNews(news.authorId)
-            FILE -> news
+            FILE -> fileStorage.updateNews(news.toFile()).toNews(news.authorId)
             SQL -> sqlDatabase.updateNews(news.toSqlEntity()).toNews(news.authorId)
             ROOM -> roomDatabase.updateNews(news.toRoomEntity()).toNews(news.authorId)
             FIREBASE -> firebaseStorage.updateNews(news)
@@ -125,8 +121,7 @@ class CoreDataRepo(
     override suspend fun deleteNews(storageType: StorageType, news: News) {
         when (storageType) {
             SHARED_PREFERENCES -> spStorage.deleteNews(news.id)
-            FILE -> {
-            }
+            FILE -> fileStorage.deleteNews(news.id)
             SQL -> sqlDatabase.deleteNews(news.id)
             ROOM -> roomDatabase.deleteNews(news.id)
             FIREBASE -> firebaseStorage.deleteNews(news)

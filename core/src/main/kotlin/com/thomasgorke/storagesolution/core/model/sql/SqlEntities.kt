@@ -4,8 +4,7 @@ data class SqlAuthorEntity(
     var id: String,
     val name: String,
     val image: ByteArray,
-) {
-}
+)
 
 data class SqlNewsEntity(
     var id: String,

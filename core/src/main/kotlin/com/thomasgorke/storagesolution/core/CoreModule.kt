@@ -19,7 +19,6 @@ package com.thomasgorke.storagesolution.core
 
 import com.google.gson.GsonBuilder
 import com.thomasgorke.storagesolution.core.local.localModule
-import com.thomasgorke.storagesolution.core.remote.remoteModule
 import org.koin.dsl.module
 
 internal val coreModule = module {
@@ -35,4 +34,4 @@ internal val coreModule = module {
     }
 }
 
-val coreModules = listOf(coreModule, localModule, remoteModule)
+val coreModules = listOf(coreModule, localModule)

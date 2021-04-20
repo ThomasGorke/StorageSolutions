@@ -20,20 +20,19 @@ package com.thomasgorke.storagesolution.author_screen
 import androidx.lifecycle.viewModelScope
 import at.florianschuster.control.Controller
 import at.florianschuster.control.createController
+import com.thomasgorke.storagesolution.utils.Snacker
 import com.thomasgorke.storagesolution.base.ui.ControllerViewModel
 import com.thomasgorke.storagesolution.core.DataRepo
 import com.thomasgorke.storagesolution.core.StorageType
 import com.thomasgorke.storagesolution.core.model.Author
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class AuthorViewModel(
+    private val snacker: Snacker,
     private val dataRepo: DataRepo,
-    private val storageType: StorageType
+    private val storageType: StorageType,
 ) : ControllerViewModel<AuthorViewModel.Action, AuthorViewModel.State>() {
 
     sealed class Action {
@@ -59,7 +58,15 @@ class AuthorViewModel(
             mutator = { action ->
                 when (action) {
                     Action.OnResume -> flow {
-                        emit(Mutation.SetAuthors(dataRepo.getAllAuthors(storageType)))
+                        val authors = kotlin.runCatching {
+                            dataRepo.getAllAuthors(storageType)
+                        }.getOrElse {
+                            Timber.e(it)
+                            snacker.showDefaultError()
+                            emptyList()
+                        }
+
+                        emit(Mutation.SetAuthors(authors))
                     }
                 }
             },

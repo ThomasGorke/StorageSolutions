@@ -9,9 +9,10 @@ internal val newsModule = module {
     fragment { NewsView() }
     viewModel { (authorId: String, storageType: StorageType) ->
         NewsViewModel(
+            snacker = get(),
             dataRepo = get(),
             authorId = authorId,
-            storageType = storageType
+            storageType = storageType,
         )
     }
 }
