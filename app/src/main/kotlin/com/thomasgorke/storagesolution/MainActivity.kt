@@ -57,14 +57,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 )
             )
         )
-        binding.bnvMain.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.add_author -> binding.bnvMain.visibility = View.GONE
-                else -> binding.bnvMain.visibility = View.VISIBLE
+                R.id.shared_preferences,
+                R.id.file_storage,
+                R.id.sql_database,
+                R.id.room_database,
+                R.id.firebase_storage -> binding.bnvMain.visibility = View.VISIBLE
+                else -> binding.bnvMain.visibility = View.GONE
+            }
+
+            if (destination.id != R.id.news) {
+                supportActionBar?.title = destination.label
             }
         }
+
+        binding.bnvMain.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()

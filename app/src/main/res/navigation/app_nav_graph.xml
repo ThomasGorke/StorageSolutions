@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/shared_preferences"
         android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
-        android:label="Preferences"
+        android:label="@string/authors"
         tools:layout="@layout/fragment_authors">
 
         <argument
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/file_storage"
         android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
-        android:label="Files"
+        android:label="@string/authors"
         tools:layout="@layout/fragment_authors">
 
         <argument
@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/sql_database"
         android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
-        android:label="SQL"
+        android:label="@string/authors"
         tools:layout="@layout/fragment_authors">
 
         <argument
@@ -71,7 +71,7 @@
     <fragment
         android:id="@+id/room_database"
         android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
-        android:label="Room"
+        android:label="@string/authors"
         tools:layout="@layout/fragment_authors">
 
         <argument
@@ -92,7 +92,7 @@
     <fragment
         android:id="@+id/firebase_storage"
         android:name="com.thomasgorke.storagesolution.author_screen.AuthorView"
-        android:label="Firebase"
+        android:label="@string/authors"
         tools:layout="@layout/fragment_authors">
 
         <argument
@@ -113,7 +113,6 @@
     <fragment
         android:id="@+id/news"
         android:name="com.thomasgorke.storagesolution.news.NewsView"
-        android:label="News"
         tools:layout="@layout/fragment_news">
 
         <argument

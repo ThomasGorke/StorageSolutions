@@ -64,13 +64,25 @@ class FirebaseStorageImpl(
     }
 
     override suspend fun deleteAuthor(authorId: String) {
-        authorsCollection.document(authorId).delete()
+        val news = getAllNewsByAuthorId(authorId)
+        news.forEach {
+            firebaseStore
+                .collection("authors/${authorId}/news")
+                .document(it.id)
+                .delete()
+                .await()
+        }
+
+        authorsCollection.document(authorId).delete().await()
+
+        imageReference.child(authorId).delete().await()
     }
 
     override suspend fun getAllNewsByAuthorId(authorId: String): List<News> {
         val news = firebaseStore
             .collection("authors/${authorId}/news")
-            .get().await()
+            .get()
+            .await()
 
         return news.map { it.toNews(authorId) }
     }
@@ -79,7 +91,8 @@ class FirebaseStorageImpl(
         firebaseStore
             .collection("authors/${news.authorId}/news")
             .document()
-            .set(FirebaseNews(news.headline, news.content)).await()
+            .set(FirebaseNews(news.headline, news.content))
+            .await()
 
         return news
     }
@@ -90,7 +103,8 @@ class FirebaseStorageImpl(
             .document(news.authorId)
             .collection("news")
             .document(news.id)
-            .set(FirebaseNews(news.headline, news.content)).await()
+            .set(FirebaseNews(news.headline, news.content))
+            .await()
         return news
     }
 
@@ -100,5 +114,6 @@ class FirebaseStorageImpl(
             .collection("news")
             .document(news.id)
             .delete()
+            .await()
     }
 }

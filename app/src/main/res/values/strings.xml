@@ -13,4 +13,5 @@
     <string name="toolbar_title_add">Add News</string>
     <string name="default_error_msg">An error occurred</string>
     <string name="error_empty_input">Empty input field</string>
+    <string name="authors">Authors</string>
 </resources>

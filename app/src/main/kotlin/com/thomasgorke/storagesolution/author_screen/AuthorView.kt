@@ -26,6 +26,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import at.florianschuster.control.bind
 import at.florianschuster.control.distinctMap
+import com.thomasgorke.storagesolution.MainActivity
 import com.thomasgorke.storagesolution.R
 import com.thomasgorke.storagesolution.base.ui.viewBinding
 import com.thomasgorke.storagesolution.databinding.FragmentAuthorsBinding
@@ -67,10 +68,11 @@ class AuthorView : Fragment(R.layout.fragment_authors) {
                 .launchIn(this)
 
             authorAdapter.interaction
-                .bind { authorId ->
+                .bind { author ->
                     navController.navigate(
-                        AuthorViewDirections.authorsToNews(args.storageType, authorId)
+                        AuthorViewDirections.authorsToNews(args.storageType, author.id)
                     )
+                    (requireActivity() as MainActivity).supportActionBar?.title = author.name
                 }
                 .launchIn(this)
 
